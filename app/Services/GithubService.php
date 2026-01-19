@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facade\Http;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\RequestException;
 
 class GithubService
@@ -13,7 +13,7 @@ class GithubService
      */
     public function __construct()
     {
-        $this->baseUrl = config(`services.github.base_url`);
+        $this->baseUrl = config('services.github.base_url');
     }
 
     public function getUserProfile(string $username): array
