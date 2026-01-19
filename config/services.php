@@ -34,5 +34,9 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'github' => [
+        'base_url' => env('GITHUB_API_BASE_URL','https://api.github.com'),
+        'token' => env('GITHUB_TOKEN')
+    ]
 
 ];

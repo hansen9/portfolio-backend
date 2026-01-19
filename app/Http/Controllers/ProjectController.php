@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use App\Services\GithubService;
 
 class ProjectController extends Controller
 {
@@ -22,7 +23,17 @@ class ProjectController extends Controller
      */
     public function show(Project $project): JsonResponse
     {
-        return response()->json($project);
+        $githubService = new GithubService();
+        $profile = $githubService->getUserProfile('hansen9');
+
+        try{
+            return response()->json($profile);
+        } catch (RequestException $e) {
+            report($e);
+
+            throw new \RuntimeException('external services unavailable');
+        }
+
     }
 
     /**
