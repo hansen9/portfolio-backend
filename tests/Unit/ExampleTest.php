@@ -5,6 +5,7 @@ namespace Tests\Unit;
 // use PHPUnit\Framework\TestCase;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 use App\Services\GithubService;
 
 class ExampleTest extends TestCase
@@ -18,7 +19,18 @@ class ExampleTest extends TestCase
     }
     public function test_github_service(): void
     {
+        Http::fake([
+            'https://api.github.com/users/hansen9' => Http::response([
+                'login' => 'hansen9',
+                'name' => 'Test User',
+                'bio' => 'Test bio',
+            ], 200),
+        ]);
+
         $githubService = new GithubService();
-        Log($githubService->getUserProfile('hansen9'));
+        $response = $githubService->getUserProfile('hansen9');
+
+        $this->assertIsArray($response);
+        $this->assertEquals('hansen9', $response['login']);
     }
 }
