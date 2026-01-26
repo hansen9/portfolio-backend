@@ -19,18 +19,13 @@ class ExampleTest extends TestCase
     }
     public function test_github_service(): void
     {
-        Http::fake([
-            'https://api.github.com/users/hansen9' => Http::response([
-                'login' => 'hansen9',
-                'name' => 'Test User',
-                'bio' => 'Test bio',
-            ], 200),
-        ]);
-
         $githubService = new GithubService();
         $response = $githubService->getUserProfile('hansen9');
 
         $this->assertIsArray($response);
+        $this->assertArrayHasKey('name', $response);
         $this->assertEquals('hansen9', $response['login']);
+
+        dump($response);
     }
 }
