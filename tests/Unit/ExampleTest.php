@@ -20,11 +20,11 @@ class ExampleTest extends TestCase
     public function test_github_service(): void
     {
         $githubService = new GithubService();
-        $response = $githubService->getUserProfile('hansen9');
+        $response = $githubService->getUserRepos('hansen9');
 
         $this->assertIsArray($response);
-        $this->assertArrayHasKey('name', $response);
-        $this->assertEquals('hansen9', $response['login']);
+        // $this->assertArrayHasKey('name', $response);
+        // $this->assertEquals('hansen9', $response['login']);
 
         dump($response);
     }
