@@ -20,7 +20,7 @@ class ExampleTest extends TestCase
     public function test_github_service(): void
     {
         $githubService = new GithubService();
-        $response = $githubService->getUserRepos('hansen9');
+        $response = $githubService->getLatestCommit('hansen9');
 
         $this->assertIsArray($response);
         // $this->assertArrayHasKey('name', $response);

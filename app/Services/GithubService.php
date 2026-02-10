@@ -42,4 +42,17 @@ class GithubService
 
         return $response->json();
     }
+    public function getLatestCommit(string $username): array
+    {
+        $response = Http::WithToken(config ('services.github.token'))
+            ->timeout(5)
+            ->acceptJson()
+            ->get("{$this->baseUrl}/users/{$username}/events/public",[
+                'type' => 'pushEvent'
+            ]);
+
+        $response->throw();
+
+        return $response->json();
+    }
 }
