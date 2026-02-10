@@ -53,6 +53,6 @@ class GithubService
 
         $response->throw();
 
-        return $response->json();
+        return $response->json()[0];
     }
 }
