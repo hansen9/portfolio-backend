@@ -22,10 +22,10 @@ class ExampleTest extends TestCase
         $githubService = new GithubService();
         $response = $githubService->getLatestCommit('hansen9');
 
-        $this->assertIsArray($response);
+        // $this->assertIsArray($response);
         // $this->assertArrayHasKey('name', $response);
-        // $this->assertEquals('hansen9', $response['login']);
+        $this->assertEquals('hansen9/portfolio-backend', $response['repo']['name']);
 
-        dump($response);
+        dump($response['repo']['name']);
     }
 }
