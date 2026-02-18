@@ -42,17 +42,41 @@ class GithubService
 
         return $response->json();
     }
-    public function getLatestCommit(string $username): array
+    public function getLatestCommit(string $username): ?array
     {
+        // TODO: change the personal access token to fine grained personal access token, make sure have read permission for `events`
         $response = Http::WithToken(config ('services.github.token'))
             ->timeout(5)
             ->acceptJson()
-            ->get("{$this->baseUrl}/users/{$username}/events/public",[
-                'type' => 'pushEvent'
+            ->get("{$this->baseUrl}/user/events",[
+                'per_page' => 10
             ]);
+        if ($response->failed()) {
+            return null;
+        }
 
-        $response->throw();
+        $lastPush = collect($response->json())
+            ->filter(fn($event) =>
+                $event['type'] === 'PushEvent' &&
+                !empty($event['payload']['commits'])
+            )
+            ->first();
+        if (!$lastPush) {
+            return null;
+        }
 
-        return $response->json()[0];
+        // $commits = $lastPush;
+        $commits = $lastPush['payload']['commits'];
+        $latestCommit = end($commits);
+
+        // return $commits;
+        return [
+            'repo'      => $lastPush['repo']['name'],
+            'branch'    => str_replace('refs/heads/', '', $lastPush['payload']['ref']),
+            'pushed_at' => $lastPush['created_at'],
+            'head_sha'  => $lastPush['payload']['head'],  // SHA of the latest commit
+            'commits'   => $commits,
+            'latest'    => $latestCommit,
+        ];
     }
 }

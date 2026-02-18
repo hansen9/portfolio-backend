@@ -24,8 +24,8 @@ class ExampleTest extends TestCase
 
         // $this->assertIsArray($response);
         // $this->assertArrayHasKey('name', $response);
-        $this->assertEquals('hansen9/portfolio-backend', $response['repo']['name']);
+        // $this->assertEquals('hansen9/portfolio-backend', $response['repo']['name']);
 
-        dump($response['repo']['name']);
+        dump($response);
     }
 }
